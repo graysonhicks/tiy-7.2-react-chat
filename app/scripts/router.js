@@ -7,6 +7,7 @@ require('backbone-react-component');
 
 
 var WelcomeComponent = require('./components/welcome.jsx').WelcomeComponent;
+var ChatComponent = require('./components/chat.jsx').ChatComponent;
 
 var Router = Backbone.Router.extend({
 
@@ -15,14 +16,16 @@ var Router = Backbone.Router.extend({
     'chat': 'chatLoad'
   },
   indexLoad: function(){
-    console.log('load');
-    // ReactDOM.render(
-    //   <WelcomeComponent />,
-    //   document.getElementById("main-container")
-    // );
+    ReactDOM.render(
+      <WelcomeComponent />,
+      document.getElementById("main-container")
+    );
   },
   chatLoad: function(){
-    console.log('chat');
+    ReactDOM.render(
+      <ChatComponent />,
+      document.getElementById("main-container")
+    );
   }
 });
 

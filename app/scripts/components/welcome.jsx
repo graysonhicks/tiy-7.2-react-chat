@@ -4,12 +4,25 @@ var ReactDOM = require('react-dom');
 var _ = require('underscore');
 var Backbone = require('backbone');
 require('backbone-react-component');
+var parsley = require('parsleyjs');
 // var models = require('../models/models.js');
 
 var WelcomeComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   getInitialState: function () {
   return { bgimageurl: "images/welcomebg.jpg" };
+  },
+  validateForm: function(){
+    var formTrue = $("#username-form").parsley().validate();
+    if(formTrue){
+      $('#username-submit-button').attr("disabled", false);
+    } else {
+      $('#username-submit-button').attr("disabled", true);
+    }
+  },
+  handleSubmit: function(e){
+    e.preventDefault();
+    Backbone.history.navigate("chat", {trigger: true});
   },
   render: function(){
     var style = {
@@ -29,10 +42,26 @@ var WelcomeComponent = React.createClass({
                     <div>Welcome to ChattyPanda!</div>
                   </h1>
                    <p className="welcome-form-caption">Enter your username to login:</p>
-                     <form id="username-form" className="input-group">
-                      <input type="text" className="form-control" id="username-input" placeholder="USERNAME" />
+                     <form data-validate="parsley" id="username-form" className="input-group" onSubmit={this.handleSubmit}>
+                      <input
+                        parlsey-type="text"
+                        data-parsley-length="[5,20]"
+                        data-required="true"
+                        className="form-control"
+                        id="username-input"
+                        onChange={this.validateForm}
+                        placeholder="USERNAME"
+                      />
                     </form>
-                   <div className="welcome-button-container"><button className="btn btn-primary btn-lg pull-right" form="username-form" role="button">Chat!</button></div>
+                   <div className="welcome-button-container">
+                     <button
+                       className="btn btn-primary btn-lg pull-right"
+                       form="username-form"
+                       disabled="true"
+                       id="username-submit-button"
+                       role="button">Chat!
+                     </button>
+                   </div>
                 </div>
               </div>
             </div>
