@@ -22,13 +22,13 @@
     "jquery": "^2.2.0",
     "underscore": "^1.8.3",
     "hbsfy": "^2.5.1"
-    
+
     , "bootstrap-sass": "^3.3.6"
-    
-    
+
+
     , "backbone": "^1.3.1"
-    
-    
+
+
   },
   "scripts": {
     "html": "cp app/*.html dist/",
@@ -57,7 +57,7 @@
     "watch": "parallelshell 'npm run watch:html' 'npm run watch:sass' 'npm run watch:images' 'npm run watch:js' 'npm run server'"
   },
   "browserify": {
-    "transform": [ "browserify-shim", "hbsfy", "strictify" ]
+    "transform": [ "browserify-shim", "hbsfy", "reactify", "strictify" ]
   },
   "browserify-shim": {
     "jQuery": "$",
