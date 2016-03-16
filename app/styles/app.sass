@@ -86,6 +86,11 @@ li.parsley-length
 
 //CHAT SCREEN
 
+.chat-heading
+  margin-top: 0px
+  margin-bottom: 0px
+  text-align: center
+
 .chat-panel-container
   padding-top: 15px
   height: 100%
@@ -100,10 +105,15 @@ li.parsley-length
   width: 90%
   border-radius: 6px
 
-.chat-panel
-  overflow-y: scroll
+input.parsley-success#chat-input
+  color: #0b1114
+  background-color: #d8ecf0
 
-.chat-submit-button
+.chat-area
+  overflow-y: scroll
+  max-height: 375px
+
+#chat-submit-button
   height: 34px
   padding-left: 8px
   padding-right: 8px
@@ -113,9 +123,20 @@ li.parsley-length
 .outside-message,
 .user-message
   font-size: 14px
+  padding: 5px 5px
 
 .outside-message
   text-align: left
 
 .user-message
   text-align: right
+
+.user-message-text-container
+  text-align: left
+  padding-bottom: 4px
+
+.user-message-name-and-date
+  margin-bottom: 0px
+
+.user-message-name-and-date-container
+  font-size: 9px
