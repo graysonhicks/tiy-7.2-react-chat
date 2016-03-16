@@ -24,7 +24,7 @@ var WelcomeComponent = React.createClass({
     e.preventDefault();
     var usernameInput = $('#username-input').val();
     this.props.model.set({"username": usernameInput});
-    Backbone.history.navigate("chat", {trigger: true});
+    Backbone.history.navigate("chat/" + this.props.model.get("username"), {trigger: true});
   },
   render: function(){
       var style = {
