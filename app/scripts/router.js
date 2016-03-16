@@ -6,9 +6,9 @@ var Backbone = require('backbone');
 require('backbone-react-component');
 
 var UserModel = require('./models/user.js').UserModel;
-var OutsideMessageCollection = require('./models/messages.js').OutsideMessageCollection;
+var MessageCollection = require('./models/messages.js').MessageCollection;
 var userModel = new UserModel();
-var outsideMessageCollection = new OutsideMessageCollection();
+var messageCollection = new MessageCollection();
 var WelcomeComponent = require('./components/welcome.jsx').WelcomeComponent;
 var ChatComponent = require('./components/chat.jsx').ChatComponent;
 
@@ -28,7 +28,7 @@ var Router = Backbone.Router.extend({
     console.log('chat');
     if(username){
         ReactDOM.render(
-          <ChatComponent model={userModel} collection={outsideMessageCollection}/>,
+          <ChatComponent model={userModel} collection={messageCollection}/>,
           document.getElementById("main-container")
         );
     } else {

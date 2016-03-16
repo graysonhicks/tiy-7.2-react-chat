@@ -6,51 +6,44 @@ var Backbone = require('backbone');
 require('backbone-react-component');
 var parsley = require('parsleyjs');
 
-var UserMessageComponent = React.createClass({
+
+var MessageComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   render: function(){
+
     var newMessage = function(message){ // each message is broken down into parts in this to generate div
+      console.log(this);
+      if(message.attributes.username == this.props.user.get("username")){
       return ( // the backbone mixin tracks this state so only the new message is added
-        <div key={message.id} className="alert alert-info user-message" role="alert">
-          <div className="user-message-text-container">
-            {message.userMessage}
-          </div>
-          <div className="user-message-name-and-date-container">
-            <div className="user-message-name-and-date">message sent at {message.time} by {message.username}</div>
+        <div className="col-md-9 col-md-offset-3">
+          <div key={message.cid} className="alert alert-info user-message" role="alert">
+            <div className="user-message-text-container">
+              {message.attributes.content}
+            </div>
+            <div className="user-message-name-and-date-container">
+              <div className="user-message-name-and-date">message sent at {message.attributes.time} by {message.attributes.username}</div>
+            </div>
           </div>
         </div>
       )
-    }
-    return (
-      <div className="col-md-12 user-message-container">
-        <div className="col-md-9 col-md-offset-3">
-           {this.props.userMessages.map(newMessage)}
-        </div>
-      </div>
-    )// the userMessages array is mapped above^^
-  }
-});
-
-var OutsideMessageComponent = React.createClass({
-  mixins: [Backbone.React.Component.mixin],
-  render: function(){
-      var newMessage = function(message){
-        return (
-          <div key={message.id} className="alert alert-success outside-message" role="alert">
+    } else {
+      return (
+        <div className="col-md-9">
+          <div key={message.cid} className="alert alert-success outside-message" role="alert">
             <div className="outside-message-text-container">
-              {message.userMessage}
+              {message.attributes.content}
             </div>
             <div className="outside-message-name-and-date-container">
-              <div className="outside-message-name-and-date">message sent at {message.time} by {message.username}</div>
+              <div className="outside-message-name-and-date">message sent at {message.attributes.time} by {message.attributes.username}</div>
             </div>
           </div>
-        )
-      }
-    return (
-      <div className="col-md-12 outside-message-container">
-        <div className="col-md-9">
-
         </div>
+      )
+     }
+    }
+    return (
+      <div className="col-md-12 message-container">
+           {(_.sortBy(this.props.messageCollection.map(newMessage.bind(this)), "time")).reverse()}
       </div>
     )
   }
@@ -78,12 +71,16 @@ var ChatInputComponent = React.createClass({
 
 var ChatComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
+  componentDidMount: function(){
+    //this.handleFetch();
+    setInterval(this.handleFetch, 5000);
+  },
   getInitialState: function () {
     return {
       bgimageurl: "images/bg2.jpg",
-      userMessages: [], // set empty array to hold messages
       userMessage: "", //empty string to hold message
-      outsideMessages: this.props.collection
+      messageCollection: this.props.collection,
+      username: this.props.model.get('username')
      };
   },
   validateForm: function(){
@@ -94,21 +91,23 @@ var ChatComponent = React.createClass({
       $('#chat-submit-button').attr("disabled", true);
     }
   },
+  handleFetch: function(){
+    this.state.messageCollection.fetch();
+  },
   handleChange: function(e){
     this.validateForm(); // on change check to make sure at least one character has been typed
     this.setState({userMessage: e.target.value}); // constantly set userMessage to the input value
   },
   handleSubmit: function(e){
     e.preventDefault();
-    var date = new Date();
-    var newUserMessage = this.state.userMessages.concat([ // concat this new message with old ones
-      { 'id': Date.now(), // gives unique id
-        'userMessage': this.state.userMessage, //this is set on handleChange above
+    var newUserMessage = {
+        'content': this.state.userMessage, //this is set on handleChange above
         'username': this.props.model.get("username"),
-        'time': date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2)
-      }
-    ]);
-    this.setState({userMessages: newUserMessage, userMessage: ''}); // now userMessages is set to the new bigger group of messages and current usermessage is cleared
+        'time': Date.now()
+      };
+      console.log(this.getCollection());
+    this.getCollection().create(newUserMessage);
+    this.setState({userMessage: ""});
   },
   render: function(){
     var style = {
@@ -127,8 +126,8 @@ var ChatComponent = React.createClass({
                     <span>ChattyPanda!</span>
                   </h1>
                   <div className="row well chat-area" id="messages-container">
-                    <OutsideMessageComponent collection={this.props.collection} model={this.props.model}/>
-                    <UserMessageComponent userMessages={this.state.userMessages} user={this.props.model}/>
+                    <MessageComponent messageCollection={this.state.messageCollection} user={this.props.model}/>
+
                   </div>
                   <div className="chat-input-container">
                     <ChatInputComponent

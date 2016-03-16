@@ -1,13 +1,16 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 
-var OutsideMessageModel = Backbone.Model.extend({});
+var MessageModel = Backbone.Model.extend({});
 
-var OutsideMessageCollection = Backbone.Collection.extend({
+var MessageCollection = Backbone.Collection.extend({
   url: "http://tiny-lasagna-server.herokuapp.com/collections/messages",
-  model: OutsideMessageModel
+  parse: function(data){
+    return data;
+  },
+  model: MessageModel
 });
 
 module.exports = {
-  OutsideMessageCollection: OutsideMessageCollection
+  MessageCollection: MessageCollection
 };
