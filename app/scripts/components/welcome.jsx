@@ -5,7 +5,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 require('backbone-react-component');
 var parsley = require('parsleyjs');
-// var models = require('../models/models.js');
+
 
 var WelcomeComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
@@ -22,13 +22,15 @@ var WelcomeComponent = React.createClass({
   },
   handleSubmit: function(e){
     e.preventDefault();
+    var usernameInput = $('#username-input').val();
+    this.props.model.set({"username": usernameInput});
+    console.log(this.props.model.get("username"));
     Backbone.history.navigate("chat", {trigger: true});
   },
   render: function(){
-    var style = {
-      backgroundImage: 'url(' + this.state.bgimageurl + ')'
-     };
-    console.log(style);
+      var style = {
+        backgroundImage: 'url(' + this.state.bgimageurl + ')'
+       };
       return (
         <div className="container-fluid welcome-panel-container" style={style}>
           <div className="row">

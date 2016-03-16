@@ -14,7 +14,7 @@ var ChatComponent = React.createClass({
     var style = {
       backgroundImage: 'url(' + this.state.bgimageurl + ')'
      };
-    console.log(style);
+    console.log(this.props.model);
       return (
         <div className="container-fluid chat-panel-container" style={style}>
           <div className="row">
@@ -35,7 +35,7 @@ var ChatComponent = React.createClass({
                     </div>
                     <div className="col-md-12 user-message-container">
                       <div className="col-md-9 col-md-offset-3">
-                        <div className="alert alert-info user-message" role="alert">User message</div>
+                        <div className="alert alert-info user-message" role="alert">User message {this.props.model.get("username")}</div>
                       </div>
                     </div>
                   </div>
