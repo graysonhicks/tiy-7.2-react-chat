@@ -12,7 +12,6 @@ var MessageComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   render: function(){
     var newMessage = function(message){ // each message is broken down into parts in this to generate div
-      console.log(message.attributes.time);
       var time = moment(message.attributes.time);
       time = moment(time).format("h:mm a");
       if(message.attributes.username == this.props.user.get("username")){
