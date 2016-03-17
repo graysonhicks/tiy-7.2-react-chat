@@ -15,7 +15,7 @@ var ChatComponent = require('./components/chat.jsx').ChatComponent;
 var Router = Backbone.Router.extend({
   routes: {
     '': 'indexLoad',
-    'chat/:username': 'chatLoad'
+    'chat(/:username)': 'chatLoad'
   },
   indexLoad: function(){
     console.log('index');
@@ -25,7 +25,6 @@ var Router = Backbone.Router.extend({
       }),
       document.getElementById("main-container")
     );
-
   },
   chatLoad: function(username){
     console.log('chat');
