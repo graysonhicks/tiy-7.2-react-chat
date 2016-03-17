@@ -20,15 +20,21 @@ var Router = Backbone.Router.extend({
   indexLoad: function(){
     console.log('index');
     ReactDOM.render(
-      <WelcomeComponent model={userModel}/>,
+      React.createElement(WelcomeComponent, {
+        model: userModel
+      }),
       document.getElementById("main-container")
     );
+
   },
   chatLoad: function(username){
     console.log('chat');
-    if(username){
-        ReactDOM.render(
-          <ChatComponent model={userModel} collection={messageCollection}/>,
+    if (username){
+      ReactDOM.render(
+          React.createElement(ChatComponent, {
+            model: userModel,
+            collection: messageCollection
+          }),
           document.getElementById("main-container")
         );
     } else {
