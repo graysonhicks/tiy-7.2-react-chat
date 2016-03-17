@@ -5,24 +5,35 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 require('backbone-react-component');
 var parsley = require('parsleyjs');
+var moment = require('moment');
 
 
 var MessageComponent = React.createClass({
   mixins: [Backbone.React.Component.mixin],
   render: function(){
-
     var newMessage = function(message){ // each message is broken down into parts in this to generate div
-      console.log(this);
+      console.log(message.attributes.time);
+      var time = moment(message.attributes.time);
+      time = moment(time).format("h:mm a");
       if(message.attributes.username == this.props.user.get("username")){
       return ( // the backbone mixin tracks this state so only the new message is added
         <div className="col-md-9 col-md-offset-3">
           <div key={message.cid} className="alert alert-info user-message" role="alert">
-            <div className="user-message-text-container">
-              {message.attributes.content}
-            </div>
-            <div className="user-message-name-and-date-container">
-              <div className="user-message-name-and-date">message sent at {message.attributes.time} by {message.attributes.username}</div>
-            </div>
+              <div className="row">
+                <div className="col-md-9">
+                  <div className="user-message-text-container">
+                    {message.attributes.content}
+                  </div>
+                  <div className="user-message-name-and-date-container">
+                    <div className="user-message-name-and-date">message sent at {time} by {message.attributes.username}</div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="user-gravatar-container">
+                    <img src={message.attributes.user_avatar}></img>
+                  </div>
+                </div>
+              </div>
           </div>
         </div>
       )
@@ -30,14 +41,23 @@ var MessageComponent = React.createClass({
       return (
         <div className="col-md-9">
           <div key={message.cid} className="alert alert-success outside-message" role="alert">
-            <div className="outside-message-text-container">
-              {message.attributes.content}
-            </div>
-            <div className="outside-message-name-and-date-container">
-              <div className="outside-message-name-and-date">message sent at {message.attributes.time} by {message.attributes.username}</div>
+            <div className="row">
+              <div className="col-md-3">
+                <div className="outside-gravatar-container">
+                  <img src={message.attributes.user_avatar}></img>
+                </div>
+             </div>
+             <div className="col-md-9">
+              <div className="outside-message-text-container">
+                {message.attributes.content}
+              </div>
+              <div className="outside-message-name-and-date-container">
+                <div className="outside-message-name-and-date">message sent at {time} by {message.attributes.username}</div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
       )
      }
     }
@@ -103,11 +123,16 @@ var ChatComponent = React.createClass({
     var newUserMessage = {
         'content': this.state.userMessage, //this is set on handleChange above
         'username': this.props.model.get("username"),
-        'time': Date.now()
+        'time': Date.now(),
+        'user_avatar': this.props.model.get("user_avatar")
       };
-      console.log(this.getCollection());
     this.getCollection().create(newUserMessage);
     this.setState({userMessage: ""});
+  },
+  logOut: function(e){
+    e.preventDefault();
+    localStorage.clear();
+    Backbone.history.navigate("", {trigger: true});
   },
   render: function(){
     var style = {
@@ -124,6 +149,7 @@ var ChatComponent = React.createClass({
                       <img className="panda-logo" src="images/panda.png" alt="" />
                     </span>
                     <span>ChattyPanda!</span>
+                    <button onClick={this.logOut} className="btn btn-danger btn-lg pull-right" id="logout-button" role="button">Logout</button>
                   </h1>
                   <div className="row well chat-area" id="messages-container">
                     <MessageComponent messageCollection={this.state.messageCollection} user={this.props.model}/>

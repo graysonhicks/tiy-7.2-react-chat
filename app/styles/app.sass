@@ -74,12 +74,14 @@ li.parsley-length
 #username-form
   width: 100%
 
-#username-input
+#username-input,
+#email-input
   width: 100%
   border-radius: 6px
   text-align: center
   text-transform: uppercase
   font-weight: bold
+  margin-bottom: 5px
 
 .welcome-button-container
   padding-top: 15px
@@ -111,7 +113,7 @@ input.parsley-success#chat-input
 
 .chat-area
   overflow-y: scroll
-  max-height: 375px
+  max-height: 425px
 
 #chat-submit-button
   height: 34px
@@ -126,17 +128,36 @@ input.parsley-success#chat-input
   padding: 5px 5px
 
 .outside-message
-  text-align: left
+
+.outside-gravatar-container
+  img
+    border-radius: 100%
+    height: 40px
+    width: 40px
+
+.outside-message-text-container
+  text-align: right
+  font-weight: bold
+
+.outside-message-name-and-date-container
+  text-align: right
+  font-size: 9px
 
 .user-message
-  text-align: right
 
 .user-message-text-container
-  text-align: left
   padding-bottom: 4px
+  font-weight: bold
 
 .user-message-name-and-date
   margin-bottom: 0px
 
 .user-message-name-and-date-container
   font-size: 9px
+
+.user-gravatar-container
+  text-align: right
+  img
+    border-radius: 100%
+    height: 40px
+    width: 40px

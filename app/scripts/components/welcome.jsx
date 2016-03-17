@@ -14,16 +14,24 @@ var WelcomeComponent = React.createClass({
   },
   validateForm: function(){
     var formTrue = $("#username-form").parsley().validate();
-    if(formTrue){
-      $('#username-submit-button').attr("disabled", false);
-    } else {
+    console.log($("#username-input").attr("placeholder"));
+    console.log($("#username-input").val());
+    if(!formTrue || $("#username-input").val() == ""){
       $('#username-submit-button').attr("disabled", true);
+    } else {
+      $('#username-submit-button').attr("disabled", false);
     }
   },
   handleSubmit: function(e){
     e.preventDefault();
     var usernameInput = $('#username-input').val();
-    this.props.model.set({"username": usernameInput});
+    var emailInput = $('#email-input').val();
+    localStorage.setItem("username", usernameInput);
+    this.props.model.set({"username": localStorage.username});
+    localStorage.setItem("email", emailInput);
+    this.props.model.set({"email": localStorage.email});
+    localStorage.setItem("user_avatar", this.props.model.get("user_avatar"));
+    console.log(localStorage.user_avatar);
     Backbone.history.navigate("chat/" + this.props.model.get("username"), {trigger: true});
   },
   render: function(){
@@ -45,13 +53,23 @@ var WelcomeComponent = React.createClass({
                    <p className="welcome-form-caption">Enter your username to login:</p>
                      <form data-validate="parsley" id="username-form" className="input-group" onSubmit={this.handleSubmit}>
                       <input
-                        parlsey-type="text"
+                        placeholder="USERNAME"
+                        data-parlsey-type="text"
                         data-parsley-length="[5,20]"
-                        data-required="true"
+                        data-parsley-trigger="change"
                         className="form-control"
+                        required=""
                         id="username-input"
                         onChange={this.validateForm}
-                        placeholder="USERNAME"
+                      />
+                      <input
+                        type="email"
+                        data-parsley-trigger="change"
+                        required=""
+                        className="form-control"
+                        id="email-input"
+                        onChange={this.validateForm}
+                        placeholder="EMAIL"
                       />
                     </form>
                    <div className="welcome-button-container">
