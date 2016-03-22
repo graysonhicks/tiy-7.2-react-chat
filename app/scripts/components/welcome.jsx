@@ -38,7 +38,7 @@ var WelcomeComponent = React.createClass({
       var style = {
         backgroundImage: 'url(' + this.state.bgimageurl + ')'
        };
-      return (
+       return (
         <div className="container-fluid welcome-panel-container" style={style}>
           <div className="row">
             <div className="col-md-6 col-md-offset-3">

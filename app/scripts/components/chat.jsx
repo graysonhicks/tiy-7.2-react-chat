@@ -16,7 +16,7 @@ var MessageComponent = React.createClass({
       time = moment(time).format("h:mm a");
       if(message.attributes.username == this.props.user.get("username")){
       return ( // the backbone mixin tracks this state so only the new message is added
-        <div className="col-md-9 col-md-offset-3">
+        <div className="col-md-9 user-message-column col-md-offset-3">
           <div key={message.cid} className="alert alert-info user-message" role="alert">
               <div className="row">
                 <div className="col-md-9">
@@ -38,7 +38,7 @@ var MessageComponent = React.createClass({
       )
     } else {
       return (
-        <div className="col-md-9">
+        <div className="col-md-9 outside-message-column">
           <div key={message.cid} className="alert alert-success outside-message" role="alert">
             <div className="row">
               <div className="col-md-3">
